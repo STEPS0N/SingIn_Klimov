@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SingIn_Klimov">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegInActivity"
             android:exported="false" />
         <activity

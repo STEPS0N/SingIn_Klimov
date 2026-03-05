@@ -27,6 +27,13 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(SingIn);
         });
 
+        TextView btnResetPassword = findViewById(R.id.btn_open_reset_password);
+
+        btnResetPassword.setOnClickListener(v -> {
+            Intent Reset = new Intent(this, ResetPasswordActivity.class);
+            startActivity(Reset);
+        });
+
         Button btnLogIn = findViewById(R.id.btn_log_in);
 
         btnLogIn.setOnClickListener(v -> {
