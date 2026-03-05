@@ -46,6 +46,7 @@
             android:textSize="15dp"/>
 
         <EditText
+            android:id="@+id/EmailRegIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="deliver$mail.ru"
@@ -74,6 +75,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/LastnameRegIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Иванов"
@@ -102,6 +104,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/FirstnameRegIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Иван"
@@ -130,6 +133,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/SurenameRegIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Иванович"
@@ -158,6 +162,7 @@
             android:textSize="15dp" />
 
         <Spinner
+            android:id="@+id/SexRegIn"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:entries="@array/genders"
@@ -186,6 +191,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/PasswordRegIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="*******"
@@ -204,12 +210,12 @@
         android:textColor="#FA4A0C"
         android:textFontWeight="900"
         android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
+        app:layout_constraintBottom_toTopOf="@+id/appCompatButtonRegIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatButton"
+        android:id="@+id/appCompatButtonRegIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"

@@ -40,13 +40,15 @@ public class LogInActivity extends AppCompatActivity {
                 Toast.makeText(this, "Не указана почта пользователя", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            if (password.isEmpty()){
+            else if (password.isEmpty()){
                 Toast.makeText(this, "Не указан пароль пользователя", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            Toast.makeText(this, "Пользователь авторизован", Toast.LENGTH_SHORT).show();
+            else {
+                etEmail.setText("");
+                etPassword.setText("");
+                Toast.makeText(this, "Пользователь авторизован", Toast.LENGTH_SHORT).show();
+            }
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

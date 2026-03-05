@@ -1,13 +1,19 @@
 package com.example.singin_klimov;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import org.w3c.dom.Text;
 
 public class RegInActivity extends AppCompatActivity {
 
@@ -18,8 +24,66 @@ public class RegInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reg_in);
 
         TextView btnOpenLogin = findViewById(R.id.btn_open_log_in);
+
         btnOpenLogin.setOnClickListener(v -> {
-            finish();
+            Intent RegIn = new Intent(this, LogInActivity.class);
+            startActivity(RegIn);
+        });
+
+        Button btnRegIn = findViewById(R.id.appCompatButtonRegIn);
+
+        btnRegIn.setOnClickListener(v -> {
+            TextView Email = findViewById(R.id.EmailRegIn);
+            TextView Lastname = findViewById(R.id.LastnameRegIn);
+            TextView Firstname = findViewById(R.id.FirstnameRegIn);
+            TextView Surename = findViewById(R.id.SurenameRegIn);
+            Spinner Sex = findViewById(R.id.SexRegIn);
+            TextView Password = findViewById(R.id.PasswordRegIn);
+
+            String email = Email.getText().toString();
+            String lastname = Lastname.getText().toString();
+            String firstname = Firstname.getText().toString();
+            String surename = Surename.getText().toString();
+            String password = Password.getText().toString();
+
+            if (email.isEmpty()){
+                Toast.makeText(this, "Пожалуйста, введите свою почту", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (!email.matches("^[aA-zZ.?&,]{2,20}@[aA-zZ]{2,20}.[aA-zZ]{2,3}$")){
+                Toast.makeText(this, "Формат почты должен быть такой: xx@xx.xx", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (lastname.isEmpty()){
+                Toast.makeText(this, "Пожалуйста, введите свою фамилию", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (firstname.isEmpty()){
+                Toast.makeText(this, "Пожалуйста, введите своё имя", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (surename.isEmpty()){
+                Toast.makeText(this, "Пожалуйста, введите своё отчество", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (Sex == null){
+                Toast.makeText(this, "Пожалуйста, выберите пол", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (password.isEmpty()){
+                Toast.makeText(this, "Пожалуйста, придумайте пароль", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else {
+                Email.setText("");
+                Lastname.setText("");
+                Firstname.setText("");
+                Surename.setText("");
+                Sex.setSelection(0);
+                Password.setText("");
+                Toast.makeText(this, "Вы зарегистрированны", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
