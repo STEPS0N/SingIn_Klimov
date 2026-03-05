@@ -40,6 +40,10 @@ public class LogInActivity extends AppCompatActivity {
                 Toast.makeText(this, "Не указана почта пользователя", Toast.LENGTH_SHORT).show();
                 return;
             }
+            else if (!email.matches("^[aA-zZ.?&,]{2,20}@[aA-zZ]{2,20}.[aA-zZ]{2,3}$")){
+                Toast.makeText(this, "Формат почты должен быть такой: xx@xx.xx", Toast.LENGTH_SHORT).show();
+                return;
+            }
             else if (password.isEmpty()){
                 Toast.makeText(this, "Не указан пароль пользователя", Toast.LENGTH_SHORT).show();
                 return;
