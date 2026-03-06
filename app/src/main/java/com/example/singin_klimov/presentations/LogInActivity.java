@@ -1,7 +1,10 @@
 package com.example.singin_klimov.presentations;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.singin_klimov.R;
+import com.example.singin_klimov.datas.apis.UserLogin;
+import com.example.singin_klimov.datas.common.CheckInternet;
+import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
+import com.example.singin_klimov.domains.models.User;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -62,6 +69,8 @@ public class LogInActivity extends AppCompatActivity {
                 etPassword.setText("");
                 Toast.makeText(this, "Пользователь авторизован", Toast.LENGTH_SHORT).show();
             }
+
+            requestUserLogin(email, password);
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -69,5 +78,32 @@ public class LogInActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void requestUserLogin(String email, String password) {
+        Context context = this;
+        CheckInternet checkInternet = new CheckInternet(this);
+
+        User User = new User();
+        User.email = email;
+        User.password = password;
+
+        UserLogin RequestUserLogin = new UserLogin(
+                User,
+                checkInternet,
+                new MyResponseCallback() {
+                    @Override
+                    public void onComplete(String result) {
+                        Log.d("USER LOGIN", result);
+                        Toast.makeText(context, "Успешная авторизация пользователя", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.d("USER LOGIN", error);
+                        Toast.makeText(context, "При авторизации возникли ошибки", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        RequestUserLogin.execute();
     }
 }

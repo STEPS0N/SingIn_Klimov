@@ -3,7 +3,7 @@ import android.os.AsyncTask;
 import com.example.singin_klimov.datas.common.CheckInternet;
 import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
 
-public class MyAsyncTask {
+public class MyAsyncTask extends AsyncTask<Void, Void, String> {
 
     protected MyResponseCallback callback;
     protected CheckInternet checkInternet;
