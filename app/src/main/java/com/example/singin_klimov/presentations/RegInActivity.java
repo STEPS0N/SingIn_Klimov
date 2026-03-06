@@ -127,7 +127,7 @@ public class RegInActivity extends AppCompatActivity {
                     @Override
                     public void onError(String error) {
                         Log.d("USER LOGIN", error);
-                        Toast.makeText(context, "При авторизации возникли ошибки", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "При регистрации возникли ошибки", Toast.LENGTH_SHORT).show();
                     }
                 });
         RequestUserCreate.execute();
