@@ -1,7 +1,9 @@
 package com.example.singin_klimov.presentations;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,6 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.singin_klimov.R;
+import com.example.singin_klimov.datas.apis.UserCreate;
+import com.example.singin_klimov.datas.common.CheckInternet;
+import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
+import com.example.singin_klimov.domains.models.User;
 
 public class RegInActivity extends AppCompatActivity {
 
@@ -45,6 +51,7 @@ public class RegInActivity extends AppCompatActivity {
             String firstname = Firstname.getText().toString();
             String surename = Surename.getText().toString();
             String password = Password.getText().toString();
+            Integer sex = Sex.getSelectedItemPosition();
 
             if (email.isEmpty()){
                 Toast.makeText(this, "Пожалуйста, введите свою почту", Toast.LENGTH_SHORT).show();
@@ -66,7 +73,7 @@ public class RegInActivity extends AppCompatActivity {
                 Toast.makeText(this, "Пожалуйста, введите своё отчество", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else if (Sex == null){
+            else if (sex == null){
                 Toast.makeText(this, "Пожалуйста, выберите пол", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -84,6 +91,8 @@ public class RegInActivity extends AppCompatActivity {
                 Toast.makeText(this, "Вы зарегистрированны", Toast.LENGTH_SHORT).show();
             }
 
+            requestUserCreate(email, lastname, firstname, surename, sex, password);
+
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -91,5 +100,37 @@ public class RegInActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void requestUserCreate(String email, String lastname, String firstname, String surename, Integer gender, String password){
+        Context context = this;
+        CheckInternet checkInternet = new CheckInternet(this);
+
+        User User = new User();
+        User.email = email;
+        User.lastname = lastname;
+        User.firstname = firstname;
+        User.surename = surename;
+        User.gender = gender;
+        User.password = password;
+
+        UserCreate RequestUserCreate = new UserCreate(
+                User,
+                checkInternet,
+                new MyResponseCallback() {
+                    @Override
+                    public void onComplete(String result) {
+                        Log.d("USER LOGIN", result);
+                        Toast.makeText(context, "Успешная регистрация пользователя", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.d("USER LOGIN", error);
+                        Toast.makeText(context, "При авторизации возникли ошибки", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        RequestUserCreate.execute();
+
     }
 }
