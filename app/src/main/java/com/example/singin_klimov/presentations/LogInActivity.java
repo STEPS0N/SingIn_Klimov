@@ -1,4 +1,4 @@
-package com.example.singin_klimov;
+package com.example.singin_klimov.presentations;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.singin_klimov.R;
 
 public class LogInActivity extends AppCompatActivity {
 

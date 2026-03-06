@@ -1,4 +1,4 @@
-package com.example.singin_klimov;
+package com.example.singin_klimov.presentations;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import org.w3c.dom.Text;
+import com.example.singin_klimov.R;
 
 public class RegInActivity extends AppCompatActivity {
 
