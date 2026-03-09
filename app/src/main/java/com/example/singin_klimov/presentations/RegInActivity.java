@@ -88,7 +88,7 @@ public class RegInActivity extends AppCompatActivity {
                 Surename.setText("");
                 Sex.setSelection(0);
                 Password.setText("");
-                Toast.makeText(this, "Вы зарегистрированны", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Вы зарегистрированы", Toast.LENGTH_SHORT).show();
             }
 
             requestUserCreate(email, lastname, firstname, surename, sex, password);
@@ -126,8 +126,10 @@ public class RegInActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String error) {
-                        Log.d("USER LOGIN", error);
-                        Toast.makeText(context, "При регистрации возникли ошибки", Toast.LENGTH_SHORT).show();
+                        Log.e("USER REGISTER", "Ошибка: " + error);
+                        runOnUiThread(() -> {
+                            Toast.makeText(context, "Ошибка: " + error, Toast.LENGTH_LONG).show();
+                        });
                     }
                 });
         RequestUserCreate.execute();

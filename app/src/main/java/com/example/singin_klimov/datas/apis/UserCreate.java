@@ -1,5 +1,7 @@
 package com.example.singin_klimov.datas.apis;
 
+import android.util.Log;
+
 import com.example.singin_klimov.datas.common.CheckInternet;
 import com.example.singin_klimov.domains.apis.MyAsyncTask;
 import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
@@ -23,23 +25,28 @@ public class UserCreate extends MyAsyncTask {
     @Override
     protected String doInBackground(Void... voids){
         if (!checkInternet.isWiFiConnection() && !checkInternet.isMobileConnection())
-            return "Error : no internet connection";
+            return "Error: no internet connection";
 
         String rawData = new GsonBuilder().create().toJson(this.user);
 
+        // Добавьте логирование того, что отправляете
+        Log.d("USER CREATE", "Отправляемые данные: " + rawData);
+
         try {
-            Connection.Response response = Jsoup.connect("http://10.111.20.114:5000/api/user/login")
+            Connection.Response response = Jsoup.connect("http://192.168.100.5:5000/api/user/create")
                     .ignoreContentType(true)
-                    .ignoreHttpErrors(true)
+                    .ignoreHttpErrors(true)  // Оставляем true чтобы получить тело ответа даже при ошибке
                     .method(Connection.Method.POST)
                     .header("Content-type", "application/json")
                     .requestBody(rawData)
+                    .timeout(10000) // Таймаут 10 секунд
                     .execute();
 
-            return response.statusCode() == 200
-                    ? response.body()
-                    : "Error: " + response.body();
+            // Возвращаем полную информацию
+            return "Статус: " + response.statusCode() + ", Тело: " + response.body();
+
         } catch (IOException e){
+            e.printStackTrace();
             return "Error: " + e.getMessage();
         }
     }
