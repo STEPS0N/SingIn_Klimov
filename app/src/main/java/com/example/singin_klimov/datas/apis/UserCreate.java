@@ -29,22 +29,21 @@ public class UserCreate extends MyAsyncTask {
 
         String rawData = new GsonBuilder().create().toJson(this.user);
 
-        // Добавьте логирование того, что отправляете
         Log.d("USER CREATE", "Отправляемые данные: " + rawData);
+        Log.d("API_PAYLOAD", "Отправляю JSON: " + rawData);
 
         try {
-            Connection.Response response = Jsoup.connect("http://192.168.100.5:5000/api/user/create")
+            Connection.Response response = Jsoup.connect("http://10.111.20.114:5000/api/user/create")
                     .ignoreContentType(true)
-                    .ignoreHttpErrors(true)  // Оставляем true чтобы получить тело ответа даже при ошибке
+                    .ignoreHttpErrors(true)
                     .method(Connection.Method.POST)
-                    .header("Content-type", "application/json")
+                    .header("Content-Type", "application/json")
                     .requestBody(rawData)
-                    .timeout(10000) // Таймаут 10 секунд
                     .execute();
 
-            // Возвращаем полную информацию
-            return "Статус: " + response.statusCode() + ", Тело: " + response.body();
-
+            return response.statusCode() == 200
+                    ? response.body()
+                    : "Error: " + response.statusCode() + ": " + response.body();
         } catch (IOException e){
             e.printStackTrace();
             return "Error: " + e.getMessage();

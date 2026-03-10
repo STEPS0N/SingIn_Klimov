@@ -27,7 +27,7 @@ public class UserLogin extends MyAsyncTask {
         String rawData = new GsonBuilder().create().toJson(this.user);
 
         try {
-            Connection.Response response = Jsoup.connect("http://192.168.100.5:5000/api/user/login")
+            Connection.Response response = Jsoup.connect("http://10.111.20.114:5000/api/user/login")
                     .ignoreContentType(true)
                     .ignoreHttpErrors(true)
                     .method(Connection.Method.POST)
@@ -37,7 +37,7 @@ public class UserLogin extends MyAsyncTask {
 
             return response.statusCode() == 200
                     ? response.body()
-                    : "Error: " + response.body();
+                    : "Error: " + response.statusCode() + ": " + response.body();
         } catch (IOException e){
             return "Error: " + e.getMessage();
         }

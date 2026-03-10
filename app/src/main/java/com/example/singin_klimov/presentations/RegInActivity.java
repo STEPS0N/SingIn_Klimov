@@ -2,6 +2,7 @@ package com.example.singin_klimov.presentations;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -20,6 +21,9 @@ import com.example.singin_klimov.datas.apis.UserCreate;
 import com.example.singin_klimov.datas.common.CheckInternet;
 import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
 import com.example.singin_klimov.domains.models.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegInActivity extends AppCompatActivity {
 
@@ -88,7 +92,6 @@ public class RegInActivity extends AppCompatActivity {
                 Surename.setText("");
                 Sex.setSelection(0);
                 Password.setText("");
-                Toast.makeText(this, "Вы зарегистрированы", Toast.LENGTH_SHORT).show();
             }
 
             requestUserCreate(email, lastname, firstname, surename, sex, password);
@@ -102,7 +105,7 @@ public class RegInActivity extends AppCompatActivity {
         });
     }
 
-    public void requestUserCreate(String email, String lastname, String firstname, String surename, Integer gender, String password){
+    public void requestUserCreate(String email, String lastname, String firstname, String surname, Integer gender, String password){
         Context context = this;
         CheckInternet checkInternet = new CheckInternet(this);
 
@@ -110,7 +113,7 @@ public class RegInActivity extends AppCompatActivity {
         User.email = email;
         User.lastname = lastname;
         User.firstname = firstname;
-        User.surename = surename;
+        User.surname = surname;
         User.gender = gender;
         User.password = password;
 
@@ -120,15 +123,25 @@ public class RegInActivity extends AppCompatActivity {
                 new MyResponseCallback() {
                     @Override
                     public void onComplete(String result) {
-                        Log.d("USER LOGIN", result);
-                        Toast.makeText(context, "Успешная регистрация пользователя", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsonResponse = new JSONObject(result);
+                            String token = jsonResponse.getString("token");
+
+                            SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                            prefs.edit().putString("auth_token", token).apply();
+
+                            Toast.makeText(context, "Успешная регистрация", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, "Ошибка при обработке ответа", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(String error) {
                         Log.e("USER REGISTER", "Ошибка: " + error);
                         runOnUiThread(() -> {
-                            Toast.makeText(context, "Ошибка: " + error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "При регистрации произошла ошибка", Toast.LENGTH_LONG).show();
                         });
                     }
                 });

@@ -3,6 +3,7 @@ package com.example.singin_klimov.presentations;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -20,6 +21,9 @@ import com.example.singin_klimov.datas.apis.UserLogin;
 import com.example.singin_klimov.datas.common.CheckInternet;
 import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
 import com.example.singin_klimov.domains.models.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -67,7 +71,6 @@ public class LogInActivity extends AppCompatActivity {
             else {
                 etEmail.setText("");
                 etPassword.setText("");
-                Toast.makeText(this, "Пользователь авторизован", Toast.LENGTH_SHORT).show();
             }
 
             requestUserLogin(email, password);
@@ -95,7 +98,15 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(String result) {
                         Log.d("USER LOGIN", result);
-                        Toast.makeText(context, "Успешная авторизация пользователя", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject json = new JSONObject(result);
+                            String token = json.getString("token");
+                            SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                            prefs.edit().putString("auth_token", token).apply();
+                            startActivity(new Intent(LogInActivity.this, ProfileActivity.class));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

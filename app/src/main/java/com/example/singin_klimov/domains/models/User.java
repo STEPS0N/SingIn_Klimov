@@ -7,7 +7,7 @@ public class User {
     public String password;
     public String firstname;
     public String lastname;
-    public String surename;
+    public String surname;
     public String dateOfBirth;
     public Integer gender;
     public String token;

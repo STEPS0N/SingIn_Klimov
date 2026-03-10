@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvEmail, tvLastName, tvFirstName, tvSureName, tvGender;
     private Button btnLogout;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,29 +59,35 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserData(){
-        Context context = this;
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        this.token = prefs.getString("auth_token", "");
+
+        if (token.isEmpty()) {
+            Toast.makeText(this, "Токен не найден, войдите снова", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LogInActivity.class));
+            finish();
+            return;
+        }
+
         CheckInternet checkInternet = new CheckInternet(this);
 
-        User User = new User();
-
         UserGet userGet = new UserGet(
-                User,
+                token,
                 checkInternet,
                 new MyResponseCallback() {
                     @Override
                     public void onComplete(String result) {
                         runOnUiThread(() -> {
                             try {
+
                                 Log.d("PROFILE", "Данные пользователя: " + result);
 
-                                // Парсим JSON ответ
                                 JSONObject userData = new JSONObject(result);
 
-                                // Отображаем данные
                                 tvEmail.setText("Email: " + userData.optString("email"));
                                 tvLastName.setText("Фамилия: " + userData.optString("lastname"));
                                 tvFirstName.setText("Имя: " + userData.optString("firstname"));
-                                tvSureName.setText("Отчество: " + userData.optString("surename"));
+                                tvSureName.setText("Отчество: " + userData.optString("surname"));
 
                                 int gender = userData.optInt("gender", 0);
                                 String genderText = (gender == 0) ? "Мужской" : "Женский";

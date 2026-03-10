@@ -1,5 +1,7 @@
 package com.example.singin_klimov.datas.apis;
 
+import android.util.Log;
+
 import com.example.singin_klimov.datas.common.CheckInternet;
 import com.example.singin_klimov.domains.apis.MyAsyncTask;
 import com.example.singin_klimov.domains.callbacks.MyResponseCallback;
@@ -13,10 +15,10 @@ import java.io.IOException;
 
 public class UserGet extends MyAsyncTask {
 
-    private User user;
-    public UserGet(User user, CheckInternet checkInternet, MyResponseCallback callback) {
+    private String token;
+    public UserGet(String token, CheckInternet checkInternet, MyResponseCallback callback) {
         super(checkInternet, callback);
-        this.user = user;
+        this.token = token;
     }
 
     @Override
@@ -24,16 +26,19 @@ public class UserGet extends MyAsyncTask {
         if (!checkInternet.isWiFiConnection() && !checkInternet.isMobileConnection())
             return "Error : no internet connection";
 
-        String rawData = new GsonBuilder().create().toJson(this.user);
+        Log.d("UserGet", "Token: " + token);
+        Log.d("UserGet", "URL: http://10.111.20.114:5000/api/user/get");
 
         try {
-            Connection.Response response = Jsoup.connect("http://192.168.100.5:5000/api/user/get")
+            Connection.Response response = Jsoup.connect("http://10.111.20.114:5000/api/user/get")
                     .ignoreContentType(true)
                     .ignoreHttpErrors(true)
                     .method(Connection.Method.GET)
-                    .header("Content-type", "application/json")
-                    .requestBody(rawData)
+                    .header("Authorization", "Bearer " + token)
+                    .header("Accept", "application/json")
                     .execute();
+
+            Log.d("UserGet", "Response code: " + response.statusCode());
 
             return response.statusCode() == 200
                     ? response.body()

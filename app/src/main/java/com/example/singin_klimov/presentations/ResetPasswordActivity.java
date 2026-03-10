@@ -64,7 +64,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 Email.setText("");
                 PasswordNew.setText("");
                 PasswordReset.setText("");
-                Toast.makeText(this, "Пароль изменён", Toast.LENGTH_SHORT).show();
             }
         });
 
